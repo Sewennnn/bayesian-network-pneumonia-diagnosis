@@ -1,0 +1,298 @@
+// ~->[DNET-1]->~
+
+// File created by an unlicensed user using Netica 7.01 on Sep 22, 2024 at 07:49:16 UTC.
+
+bnet Choong_34066861_2ndSem2024FIT3 {
+AutoCompile = TRUE;
+autoupdate = TRUE;
+whenchanged = 1726991292;
+
+visual V1 {
+	defdispform = BELIEFBARS;
+	nodelabeling = TITLE;
+	NodeMaxNumEntries = 50;
+	nodefont = font {shape= "Arial"; size= 9;};
+	linkfont = font {shape= "Arial"; size= 9;};
+	ShowLinkStrengths = 1;
+	windowposn = (52, 8, 888, 560);
+	scrollposn = (0, 12);
+	resolution = 72;
+	magnification = 0.840896;
+	drawingbounds = (1780, 823);
+	showpagebreaks = FALSE;
+	usegrid = TRUE;
+	gridspace = (6, 6);
+	NodeSet Node {BuiltIn = 1; Color = 0x00e1e1e1;};
+	NodeSet Nature {BuiltIn = 1; Color = 0x00f8eed2;};
+	NodeSet Deterministic {BuiltIn = 1; Color = 0x00d3caa6;};
+	NodeSet Finding {BuiltIn = 1; Color = 0x00c8c8c8;};
+	NodeSet Constant {BuiltIn = 1; Color = 0x00ffffff;};
+	NodeSet ConstantValue {BuiltIn = 1; Color = 0x00ffffb4;};
+	NodeSet Utility {BuiltIn = 1; Color = 0x00ffbdbd;};
+	NodeSet Decision {BuiltIn = 1; Color = 0x00dee8ff;};
+	NodeSet Documentation {BuiltIn = 1; Color = 0x00f0fafa;};
+	NodeSet Title {BuiltIn = 1; Color = 0x00ffffff;};
+	PrinterSetting A {
+		margins = (1270, 1270, 1270, 1270);
+		};
+	};
+
+node Age {
+	discrete = TRUE;
+	states = (Under_six_months, Above_two_years, Six_months_to_two_years);
+	kind = NATURE;
+	parents = ();
+	whenchanged = 1726991239;
+	belief = (0.3333333, 0.3333333, 0.3333333);
+	visual V1 {
+		center = (138, 60);
+		height = 1;
+		};
+	};
+
+node Vaccine_Doses {
+	discrete = TRUE;
+	states = (Zero, One, Two, Three);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (Age);
+	probs = 
+		// Zero         One          Two          Three         // Age              
+		  (0.05,        0.25,        0.7,         0,            // Under six months 
+		   0.05,        0.125,       0.125,       0.7,          // Above two years  
+		   0.05,        0.125,       0.125,       0.7);         // Six months to tw ;
+	whenchanged = 1726990546;
+	belief = (0.05, 0.1666667, 0.3166667, 0.4666666);
+	visual V1 {
+		center = (588, 96);
+		height = 3;
+		};
+	};
+
+node Pneumonia {
+	discrete = TRUE;
+	states = (Bacterial, Viral, None);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (Age, Vaccine_Doses);
+	probs = 
+		// Bacterial    Viral        None          // Age              Vaccine_Doses 
+		  (0.3,         0.6,         0.1,          // Under six months Zero          
+		   0.18,        0.72,        0.1,          // Under six months One           
+		   0.09,        0.63,        0.28,         // Under six months Two           
+		   0.03,        0.3,         0.67,         // Under six months Three         
+		   0.2,         0.4,         0.4,          // Above two years  Zero          
+		   0.12,        0.48,        0.4,          // Above two years  One           
+		   0.06,        0.42,        0.52,         // Above two years  Two           
+		   0.02,        0.2,         0.78,         // Above two years  Three         
+		   0.25,        0.5,         0.25,         // Six months to tw Zero          
+		   0.15,        0.6,         0.25,         // Six months to tw One           
+		   0.075,       0.525,       0.4,          // Six months to tw Two           
+		   0.025,       0.25,        0.725);       // Six months to tw Three         ;
+	numcases = 
+		                 // Age              Vaccine_Doses 
+		  (1,            // Under six months Zero          
+		   0.18,         // Under six months One           
+		   0.06,         // Under six months Two           
+		   0,            // Under six months Three         
+		   1,            // Above two years  Zero          
+		   0,            // Above two years  One           
+		   0,            // Above two years  Two           
+		   0,            // Above two years  Three         
+		   1,            // Six months to tw Zero          
+		   0,            // Six months to tw One           
+		   0,            // Six months to tw Two           
+		   0);           // Six months to tw Three         ;
+	whenchanged = 1726849267;
+	belief = (0.07587501, 0.421375, 0.50275);
+	visual V1 {
+		center = (108, 378);
+		height = 4;
+		};
+	};
+
+node Rapid_Breathing {
+	discrete = TRUE;
+	states = (True, False);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (Pneumonia, Age);
+	probs = 
+		// True         False         // Pneumonia Age              
+		  (0.9,         0.1,          // Bacterial Under six months 
+		   0.5,         0.5,          // Bacterial Above two years  
+		   0.7,         0.3,          // Bacterial Six months to tw 
+		   0.45,        0.55,         // Viral     Under six months 
+		   0.25,        0.75,         // Viral     Above two years  
+		   0.35,        0.65,         // Viral     Six months to tw 
+		   0.2,         0.8,          // None      Under six months 
+		   0.2,         0.8,          // None      Above two years  
+		   0.2,         0.8);         // None      Six months to tw ;
+	whenchanged = 1726991240;
+	belief = (0.3188604, 0.6811396);
+	visual V1 {
+		center = (276, 168);
+		height = 2;
+		};
+	};
+
+node Fever {
+	discrete = TRUE;
+	states = (High_fever, Low_fever, No_fever);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (Pneumonia);
+	probs = 
+		// High fever   Low fever    No fever      // Pneumonia 
+		  (0.8,         0.1,         0.1,          // Bacterial 
+		   0.4,         0.2,         0.4,          // Viral     
+		   0.04,        0.1,         0.86);        // None      ;
+	whenchanged = 1726774337;
+	belief = (0.24936, 0.1421375, 0.6085025);
+	visual V1 {
+		center = (114, 510);
+		height = 6;
+		};
+	};
+
+node Crackling_Sound {
+	discrete = TRUE;
+	states = (True, False);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (Pneumonia);
+	probs = 
+		// True         False         // Pneumonia 
+		  (0.75,        0.25,         // Bacterial 
+		   0.4,         0.6,          // Viral     
+		   0.05,        0.95);        // None      ;
+	whenchanged = 1726775003;
+	belief = (0.2505938, 0.7494062);
+	visual V1 {
+		center = (612, 300);
+		height = 5;
+		};
+	};
+
+node Perform_X_Ray_Test {
+	discrete = TRUE;
+	states = (Yes, No);
+	kind = DECISION;
+	chance = DETERMIN;
+	parents = ();
+	functable = 
+		
+		  (No);
+	whenchanged = 1726991292;
+	belief = (1, 0);
+	visual V1 {
+		center = (474, 648);
+		height = 7;
+		};
+	};
+
+node X_Ray_Result {
+	discrete = TRUE;
+	states = (Normal, No_Result, Consolidation_with_PE, Consolidation_without_PE);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = (Pneumonia, Perform_X_Ray_Test);
+	probs = 
+		// Normal       No Result    Consolidation wi Consolidation wi  // Pneumonia Perform_X_Ray_Test 
+		  (0.05,        0,           0.15,        0.8,          // Bacterial Yes                
+		   0,           1,           0,           0,            // Bacterial No                 
+		   0.68,        0,           0.02,        0.3,          // Viral     Yes                
+		   0,           1,           0,           0,            // Viral     No                 
+		   0.95,        0,           0.02,        0.03,         // None      Yes                
+		   0,           1,           0,           0);           // None      No                 ;
+	whenchanged = 1726991241;
+	belief = (0.3839706, 0.5, 0.01493188, 0.1010975);
+	visual V1 {
+		center = (474, 516);
+		height = 11;
+		link 1 {
+			path = ((191, 409), (369, 476));
+			};
+		};
+	};
+
+node Administer_Antibiotics {
+	discrete = TRUE;
+	states = (Yes, No);
+	kind = DECISION;
+	chance = DETERMIN;
+	parents = (Perform_X_Ray_Test, X_Ray_Result);
+	functable = 
+		                    // Perform_X_Ray_Test X_Ray_Result     
+		  (No,              // Yes                Normal           
+		   Yes,             // Yes                No Result        
+		   Yes,             // Yes                Consolidation wi 
+		   Yes,             // Yes                Consolidation wi 
+		   Yes,             // No                 Normal           
+		   No,              // No                 No Result        
+		   Yes,             // No                 Consolidation wi 
+		   Yes);            // No                 Consolidation wi ;
+	whenchanged = 1726991088;
+	belief = (0, 1);
+	visual V1 {
+		center = (786, 504);
+		height = 8;
+		};
+	};
+
+node Antibiotics_Benefit {
+	discrete = FALSE;
+	measure = RATIO;
+	kind = UTILITY;
+	chance = DETERMIN;
+	parents = (Pneumonia, Administer_Antibiotics);
+	functable = 
+		                 // Pneumonia Administer_Antibiotics 
+		  (300,          // Bacterial Yes                    
+		   -150,         // Bacterial No                     
+		   -50,          // Viral     Yes                    
+		   0,            // Viral     No                     
+		   -50,          // None      Yes                    
+		   0);           // None      No                     ;
+	whenchanged = 1726990137;
+	visual V1 {
+		center = (570, 390);
+		height = 9;
+		};
+	};
+
+node X_Ray_Cost {
+	discrete = FALSE;
+	measure = RATIO;
+	kind = UTILITY;
+	chance = DETERMIN;
+	parents = (Perform_X_Ray_Test);
+	functable = 
+		                 // Perform_X_Ray_Test 
+		  (-25,          // Yes                
+		   0);           // No                 ;
+	whenchanged = 1726990215;
+	visual V1 {
+		center = (702, 648);
+		height = 12;
+		};
+	};
+
+node Antibiotics_Cost {
+	discrete = FALSE;
+	measure = RATIO;
+	kind = UTILITY;
+	chance = DETERMIN;
+	parents = (Administer_Antibiotics);
+	functable = 
+		                 // Administer_Antibiotics 
+		  (-25,          // Yes                    
+		   0);           // No                     ;
+	whenchanged = 1726990224;
+	visual V1 {
+		center = (786, 390);
+		height = 10;
+		};
+	};
+ElimOrder = (Crackling_Sound, Fever, Rapid_Breathing, Age, Vaccine_Doses, Pneumonia, Administer_Antibiotics, X_Ray_Result, Perform_X_Ray_Test);
+};

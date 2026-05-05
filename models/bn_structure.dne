@@ -1,0 +1,122 @@
+// ~->[DNET-1]->~
+
+// File created by an unlicensed user using Netica 7.01 on Sep 19, 2024 at 04:25:41 UTC.
+
+bnet Choong_34066861_2ndSem2024FIT3 {
+autoupdate = TRUE;
+whenchanged = 1726719468;
+
+visual V1 {
+	defdispform = BELIEFBARS;
+	nodelabeling = TITLE;
+	NodeMaxNumEntries = 50;
+	nodefont = font {shape= "Arial"; size= 9;};
+	linkfont = font {shape= "Arial"; size= 9;};
+	ShowLinkStrengths = 1;
+	windowposn = (52, 8, 888, 309);
+	resolution = 72;
+	drawingbounds = (1259, 720);
+	showpagebreaks = FALSE;
+	usegrid = TRUE;
+	gridspace = (6, 6);
+	NodeSet Node {BuiltIn = 1; Color = 0x00e1e1e1;};
+	NodeSet Nature {BuiltIn = 1; Color = 0x00f8eed2;};
+	NodeSet Deterministic {BuiltIn = 1; Color = 0x00d3caa6;};
+	NodeSet Finding {BuiltIn = 1; Color = 0x00c8c8c8;};
+	NodeSet Constant {BuiltIn = 1; Color = 0x00ffffff;};
+	NodeSet ConstantValue {BuiltIn = 1; Color = 0x00ffffb4;};
+	NodeSet Utility {BuiltIn = 1; Color = 0x00ffbdbd;};
+	NodeSet Decision {BuiltIn = 1; Color = 0x00dee8ff;};
+	NodeSet Documentation {BuiltIn = 1; Color = 0x00f0fafa;};
+	NodeSet Title {BuiltIn = 1; Color = 0x00ffffff;};
+	PrinterSetting A {
+		margins = (1270, 1270, 1270, 1270);
+		};
+	};
+
+node Age {
+	discrete = TRUE;
+	states = (Under_six_months, Above_two_years, Six_months_to_two_years);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = ();
+	whenchanged = 1726718832;
+	visual V1 {
+		center = (168, 42);
+		height = 4;
+		};
+	};
+
+node Vaccine_Doses {
+	discrete = TRUE;
+	states = (Zero, One, Two, Three);
+	kind = NATURE;
+	chance = CHANCE;
+	parents = ();
+	whenchanged = 1726718913;
+	visual V1 {
+		center = (444, 42);
+		height = 5;
+		};
+	};
+
+node Pneumonia {
+	discrete = TRUE;
+	states = (Bacterial, Viral, None);
+	kind = NATURE;
+	parents = (Age, Vaccine_Doses);
+	whenchanged = 1726719276;
+	visual V1 {
+		center = (150, 162);
+		height = 3;
+		};
+	};
+
+node Fever {
+	discrete = TRUE;
+	states = (True, False);
+	kind = NATURE;
+	parents = (Pneumonia);
+	whenchanged = 1726719186;
+	visual V1 {
+		center = (156, 396);
+		height = 7;
+		};
+	};
+
+node Rapid_Breathing {
+	discrete = TRUE;
+	states = (True, False);
+	kind = NATURE;
+	parents = (Pneumonia);
+	whenchanged = 1726719194;
+	visual V1 {
+		center = (342, 438);
+		height = 2;
+		};
+	};
+
+node Crackling_Sound {
+	discrete = TRUE;
+	states = (True, False);
+	kind = NATURE;
+	parents = (Pneumonia);
+	whenchanged = 1726719199;
+	visual V1 {
+		center = (618, 192);
+		height = 6;
+		};
+	};
+
+node X_Ray_Result {
+	discrete = TRUE;
+	states = (Normal, Consolidation_with_PE, Consolidation_without_PE);
+	kind = NATURE;
+	parents = (Pneumonia, Pneumonia);
+	whenchanged = 1726719238;
+	visual V1 {
+		center = (630, 372);
+		height = 1;
+		};
+	};
+};
