@@ -112,7 +112,7 @@ bayesian-network-pneumonia-diagnosis/
 │
 ├── screenshots/
 │   ├── bn_structure.png
-│   ├── inference_example.png
+│   ├── parameterized_network.png
 │   ├── decision_network.png
 
 ```
